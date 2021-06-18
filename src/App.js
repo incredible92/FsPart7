@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+} from "react-router-dom";
 
 import About from "./componenets/About";
 import AnecdoteList from "./componenets/AnecdoteList";
@@ -56,6 +62,11 @@ const App = () => {
     },
   ]);
 
+  const match = useRouteMatch("/anecdotes/:id");
+  const anecdotes = match
+    ? anecdotes.find((anecdote) => anecdote.id === Number(match.params.id))
+    : null;
+
   const [notification, setNotification] = useState("");
 
   const addNew = (anecdote) => {
@@ -82,7 +93,7 @@ const App = () => {
         <h1>Software anecdotes</h1>
         <Menu />
         <Switch>
-          <Route exact path="/">
+          <Route exact path="/anecdotes/:id">
             <AnecdoteList anecdotes={anecdotes} />
           </Route>
           <Route path="/about">
